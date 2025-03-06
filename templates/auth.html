@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ mode|title }}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>{{ mode|title }}</h2>
+    <form method="POST" class="auth-form" id="auth-form">
+        <!-- Add CSRF token field -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autocomplete="off" autofocus>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="off">
+        </div>
+        <!-- Conditionally render confirm-password field for register mode -->
+        {% if mode == 'register' %}
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required autocomplete="off">
+        </div>
+        {% endif %}
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                {{ mode|title }}
+            </button>
+        </div>
+    </form>
+    <div class="auth-switch">
+        {% if mode == 'login' %}
+            New user? <a href="{{ url_for('register') }}">Register</a>
+        {% else %}
+            Existing user? <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
