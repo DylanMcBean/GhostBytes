@@ -23,14 +23,23 @@ limiter = Limiter(
     app=app,
 )
 
-
 # Profanity censoring helper
 def censor_profanity(text):
-    profanity_list = ['nigga', 'nigger']
+    profanity_list = {
+        "gay": "coconut milk",
+        "fgt": "lieutenant",
+        "nigger": "fine sir",
+        "loli": "fine lady",
+        "fuck": "duck",
+        "dildo": "poporing",
+        "faggot": "lamborghini",
+        "cunt": "ant hill",
+        "fag": "cigarette"
+    }
     censored_text = text
-    for word in profanity_list:
+    for word in profanity_list.keys():
         pattern = r'\b' + re.escape(word) + r'\b'
-        replacement = '*' * len(word)
+        replacement = profanity_list[word]
         censored_text = re.sub(pattern, replacement, censored_text, flags=re.IGNORECASE)
     return censored_text
 
