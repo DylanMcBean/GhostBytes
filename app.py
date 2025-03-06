@@ -31,6 +31,7 @@ def censor_profanity(text):
         "nigger": "fine sir",
         "loli": "fine lady",
         "fuck": "duck",
+        "fucking": "fun time",
         "dildo": "poporing",
         "faggot": "lamborghini",
         "cunt": "ant hill",
@@ -94,6 +95,7 @@ def index():
     # Group messages from the same user if sent within 60 seconds
     last_message_id = None
     for message in raw_messages:
+        message.content = censor_profanity(message.content)
         if (not grouped_messages or 
             message.user_id != grouped_messages[-1].user_id or
             (message.timestamp - grouped_messages[-1].timestamp).total_seconds() > 60):
