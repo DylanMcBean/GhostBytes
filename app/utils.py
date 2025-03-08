@@ -25,9 +25,6 @@ def censor_profanity(text):
 def validate_username(username):
     return re.match(r'^[\w.-]{3,20}$', username)
 
-def validate_password(password):
-    return len(password) >= 8 and any(c.isupper() for c in password)
-
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

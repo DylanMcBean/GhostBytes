@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, session, flash,
 from datetime import datetime, timezone, timedelta
 from .models import User, Message
 from . import db, limiter
-from .utils import censor_profanity, validate_username, validate_password, login_required
+from .utils import censor_profanity, validate_username, login_required
 
 main = Blueprint('main', __name__)
 
@@ -48,11 +48,7 @@ def register():
             return redirect(url_for('main.register'))
 
         if not validate_username(username):
-            flash('Invalid username.')
-            return redirect(url_for('main.register'))
-
-        if not validate_password(password):
-            flash('Invalid password, must be at least 8 characters long and contain an uppercase letter.')
+            flash('Invalid username, must be 3-20 characters long and contain only letters, numbers, and . or -')
             return redirect(url_for('main.register'))
 
         if User.query.filter_by(username=username).first():
@@ -114,7 +110,7 @@ def create_message():
     message = Message(user_id=session['user_id'], content=content)
     db.session.add(message)
 
-    # Delete messages older than 2 hours (UTC)
+
     two_hours_ago = datetime.now(timezone.utc) - timedelta(hours=2)
     Message.query.filter(Message.timestamp < two_hours_ago).delete()
 

@@ -15,3 +15,4 @@ class Config:
     
     # Flask-Login configuration
     REMEMBER_COOKIE_DURATION = 60 * 60 * 24 * 30  # 30 days
+    PPERMANENT_SESSION_LIFETIME = 60 * 60 * 24 * 30  # 30 days
