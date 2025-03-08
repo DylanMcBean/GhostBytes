@@ -30,6 +30,7 @@ def index():
                            last_message_id=last_message_id)
 
 @main.route('/register', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def register():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
@@ -57,6 +58,7 @@ def register():
 
         user = User(username=username)
         user.set_password(password)
+        user.generate_session_secret()
         db.session.add(user)
         db.session.commit()
         flash('Registration successful.')
@@ -65,6 +67,7 @@ def register():
     return render_template('auth.html', mode='register')
 
 @main.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")  
 def login():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
@@ -79,12 +82,16 @@ def login():
         if not user.active:
             flash('Account disabled.')
             return redirect(url_for('main.login'))
+        
+        user_secret = user.generate_session_secret()
+        user.last_login = datetime.now(timezone.utc)
+        db.session.commit()
 
         session.permanent = True
         session['user_id'] = user.id
         session['username'] = user.username
-        user.last_login = datetime.now(timezone.utc)
-        db.session.commit()
+        session['user_secret'] = user_secret
+        print(session)
 
         return redirect(url_for('main.index'))
 

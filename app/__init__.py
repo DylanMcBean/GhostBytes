@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, flash, redirect, request, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
@@ -16,6 +16,18 @@ def create_app():
     db.init_app(app)
     csrf.init_app(app)
     limiter.init_app(app)
+    
+    # Custom error handler for rate limit exceeded
+    @app.errorhandler(429)
+    def ratelimit_handler(e):
+        flash('Too many requests. Please slow down.', 'error')
+        # Render the current template instead of redirecting
+        if request.endpoint == 'main.login':
+            return render_template('auth.html', mode='login')
+        elif request.endpoint == 'main.register':
+            return render_template('auth.html', mode='register')
+        else:
+            return redirect(url_for('main.index'))
     
     # Import models to register them with SQLAlchemy and create tables
     with app.app_context():

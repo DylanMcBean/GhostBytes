@@ -145,10 +145,14 @@ export class MessageHandler {
       if (response.ok) {
         const messageData = await response.json();
         this.handleNewMessage(messageData);
+        scrollToBottom(this.messagesContainer);
         return messageData;
+      } else if (response.status === 429) {
+        console.log("Rate limit exceeded. Please wait before sending more messages.");
+        return null;
       }
     } catch (error) {
-      console.error("Message send error:", error);
+      console.error("Error sending message:", error);
     }
   }
 }
