@@ -9,15 +9,28 @@
         <!-- Add CSRF token field -->
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         
+
         <div class="form-group">
+            {% if mode == 'register' %}
             <label for="username">Username</label>
+            {% else %}
+            <label for="username">Username or Email</label>
+            {% endif %}
             <input type="text" id="username" name="username" required autocomplete="off" autofocus>
         </div>
+
+        {% if mode == 'register' %}
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        {% endif %}
+
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required autocomplete="off">
         </div>
-        <!-- Conditionally render confirm-password field for register mode -->
+
         {% if mode == 'register' %}
         <div class="form-group">
             <label for="confirm-password">Confirm Password</label>

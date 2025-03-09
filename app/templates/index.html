@@ -11,23 +11,42 @@
     
     <div class="messages-container" id="messages">
         {% for message in messages %}
-        <div class="message {% if message.user.username == username %}user-message{% endif %}" 
-            data-message-id="{{ message.id if not loop.last else last_message_id }}">
-            <div class="message-header">
-                <span class="username">{{ message.user.username }}</span>
-                <span class="message-timestamp" data-timestamp="{{ message.timestamp.isoformat() }}">
-                    {{ message.timestamp.strftime('%H:%M') }}
-                </span>
+            {% if message.parent_message_id %}
+                <div class="message-reply">
+                    <div class="reply-content">
+                        <span class="message-username">{{ message.parent.author.username }}</span>
+                        <span class="message-content">{{ message.parent.content }}</span>
+                    </div>
+                    <div class="message-container" data-message-id="{{ message.id }}">
+                        <span class="message-timestamp" data-timestamp="{{ message.timestamp.isoformat() }}">{{ message.timestamp.strftime('%H:%M') }}</span>
+                        <div class="message-bubble">
+                            <span class="message-username">{{ message.author.username }}</span>
+                            <span class="message-content">{{ message.content }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+            <div class="message-container" data-message-id="{{ message.id }}">
+                <span class="message-timestamp" data-timestamp="{{ message.timestamp.isoformat() }}">{{ message.timestamp.strftime('%H:%M') }}</span>
+                <div class="message-bubble">
+                    <span class="message-username">{{ message.author.username }}</span>
+                    <span class="message-content">{{ message.content }}</span>
+                </div>
             </div>
-            <div class="message-content">{{ message.content }}</div>
-        </div>
+            {% endif %}
         {% endfor %}
     </div>
     
+    <div class="reply-container" id="reply-container">
+        <div class="reply-content-wrapper" id="reply-content-wrapper">
+          <span class="reply-username" id="reply-username">Username</span>
+          <span class="reply-content" id="reply-content">This is the reply content.</span>
+        </div>
+        <button class="btn-primary" id="cancel-reply-btn">Cancel</button>
+    </div>
     <div class="chat-input-container">
         <form id="message-form" class="message-form">
-            <textarea id="message-input" class="message-input" 
-                      placeholder="Type your message..." required></textarea>
+            <textarea id="message-input" class="message-input"  placeholder="Type your message..." required></textarea>
         </form>
     </div>
 </div>
