@@ -15,9 +15,7 @@
                 <div class="message-reply">
                     <div class="reply-content">
                         <span class="message-username">{{ message.parent.author.username }}</span>
-                        <span class="message-content">
-                            {{ message.parent.content[:30] + "..." if message.parent.content|length > 30 else message.parent.content|replace('\n', '<br>') }}
-                        </span>
+                        <span class="message-content">{{ message.parent.content[:30] + "..." if message.parent.content|length > 30 else message.parent.content|replace('\n', '<br>') }}</span>
                     </div>
                     <div class="message-container" data-message-id="{{ message.id }}">
                         <span class="message-timestamp" data-timestamp="{{ message.timestamp.isoformat() }}">{{ message.timestamp.strftime('%H:%M') }}</span>
