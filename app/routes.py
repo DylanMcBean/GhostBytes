@@ -183,7 +183,7 @@ def create_message():
 @login_required
 def get_recent_messages():
     after_id = request.args.get('after', type=int)
-    channel_id = 1 # request.args.get('channel_id', type=int)
+    channel_id = 1  # request.args.get('channel_id', type=int)
 
     if not channel_id:
         return jsonify({'error': 'Channel ID is required'}), 400
@@ -202,5 +202,10 @@ def get_recent_messages():
         'content': m.content,
         'timestamp': m.timestamp.isoformat(),
         'username': m.author.username,
-        'channel_id': m.channel_id
+        'channel_id': m.channel_id,
+        'parent_message_id': m.parent_message_id,
+        'parent': {
+            'username': m.parent.author.username if m.parent else None,
+            'content': m.parent.content if m.parent else None
+        }
     } for m in messages])

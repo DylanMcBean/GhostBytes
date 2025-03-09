@@ -15,13 +15,13 @@
                 <div class="message-reply">
                     <div class="reply-content">
                         <span class="message-username">{{ message.parent.author.username }}</span>
-                        <span class="message-content">{{ message.parent.content[:30] + "..." if message.parent.content|length > 30 else message.parent.content|replace('\n', '<br>') }}</span>
+                        <span class="message-content">{{ message.parent.content[:30] + "..." if message.parent.content|length > 30 else message.parent.content }}</span>
                     </div>
                     <div class="message-container" data-message-id="{{ message.id }}">
                         <span class="message-timestamp" data-timestamp="{{ message.timestamp.isoformat() }}">{{ message.timestamp.strftime('%H:%M') }}</span>
                         <div class="message-bubble">
                             <span class="message-username">{{ message.author.username }}</span>
-                            <span class="message-content">{{ message.content|replace('\n', '<br>') }}</span>
+                            <span class="message-content">{{ message.content }}</span>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <span class="message-timestamp" data-timestamp="{{ message.timestamp.isoformat() }}">{{ message.timestamp.strftime('%H:%M') }}</span>
                 <div class="message-bubble">
                     <span class="message-username">{{ message.author.username }}</span>
-                    <span class="message-content">{{ message.content|replace('\n', '<br>') }}</span>
+                    <span class="message-content">{{ message.content }}</span>
                 </div>
             </div>
             {% endif %}

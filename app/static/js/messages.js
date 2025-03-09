@@ -40,7 +40,7 @@ export class MessageHandler {
       replyContent.className = "message-reply";
 
       // Get the first line and limit to 50 characters
-      const parentContent = messageData.parent.content.split('\n')[0].slice(0, 30) + "...";
+      const parentContent = messageData.parent.content.split('\n')[0].slice(0, 30) + (messageData.parent.content.length > 30 ? "..." : "");
 
       replyContent.innerHTML = `
         <div class="reply-content">
@@ -167,6 +167,7 @@ export class MessageHandler {
     document.getElementById("reply-username").textContent = username;
     document.getElementById("reply-content").textContent = content;
     document.getElementById("reply-container").style.display = "flex"; // Show the reply container
+    document.getElementById("message-input").focus();
   }
 
   /**
