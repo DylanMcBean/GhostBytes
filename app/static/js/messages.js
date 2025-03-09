@@ -36,15 +36,19 @@ export class MessageHandler {
     `;
 
     if (messageData.parent_message_id) {
-        const replyContent = document.createElement("div");
-        replyContent.className = "message-reply";
-        replyContent.innerHTML = `
-            <div class="reply-content">
-                <span class="message-username">${escapeHtml(messageData.parent.username)}</span>
-                <span class="message-content">${escapeHtml(messageData.parent.content)}</span>
-            </div>
-        ` + messageContainer.outerHTML;
-        return replyContent;
+      const replyContent = document.createElement("div");
+      replyContent.className = "message-reply";
+
+      // Get the first line and limit to 50 characters
+      const parentContent = messageData.parent.content.split('\n')[0].slice(0, 30) + "...";
+
+      replyContent.innerHTML = `
+        <div class="reply-content">
+          <span class="message-username">${escapeHtml(messageData.parent.username)}</span>
+          <span class="message-content">${escapeHtml(parentContent)}</span>
+        </div>
+      ` + messageContainer.outerHTML;
+      return replyContent;
     }
 
     return messageContainer;
